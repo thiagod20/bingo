@@ -124,6 +124,52 @@ footer b{color:var(--tinta)}
   .mini{flex-wrap:nowrap;gap:4px}
   .mini span{width:30px;height:30px;font-size:12px}
 }
+
+/* Celular: fontes 20% maiores */
+@media (max-width:760px){
+  body{font-size:19.2px}
+  .tag{font-size:14.4px}
+  h1{font-size:clamp(31.2px,6vw,45.6px)}
+  .sub{font-size:16.8px}
+  .premio-split span{font-size:18px}
+  .premio-split small{font-size:13.2px}
+  .card .k{font-size:10.8px}
+  .card .v{font-size:22.8px}
+  .card .d{font-size:12px}
+  .card.premio .v{font-size:36px}
+  h2{font-size:15.6px}
+  .campeao h3{font-size:15.6px}
+  .campeao .nomes{font-size:28.8px}
+  .campeao .valor{font-size:21.6px}
+  .campeao .full{font-size:16.8px}
+  .dest .box h4{font-size:16.8px}
+  .chipnome{font-size:15.6px}
+  .chipnome b{font-size:14.4px}
+  .vazio{font-size:16.8px}
+  .bola{font-size:clamp(13.2px,2.88vw,18px)}
+  .legenda{font-size:14.4px}
+  .sorteio .num b{font-size:18px}
+  .sorteio .num small{font-size:14.4px}
+  .mini span{font-size:14.4px}
+  .busca{font-size:18px}
+  .linha .nm{font-size:15.6px}
+  .pts{font-size:16.8px}
+  .nums span{font-size:14.4px}
+  .hist{font-size:16.8px}
+  .hist th{font-size:13.2px}
+  .aviso{font-size:15.6px}
+  footer{font-size:15.6px}
+  .linha .nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+  .linha .nums span{width:auto;height:32px;font-size:14px;border-radius:7px}
+  .mini span{width:34px;height:34px}
+  .sorteio .num{min-width:86px}
+  .linha{grid-template-columns:42px 1fr 48px}
+  .hist tr:first-child{display:none}
+  .hist tr{display:block;padding:8px 0;border-bottom:1px solid var(--linha)}
+  .hist tr:last-child{border-bottom:0}
+  .hist td,.hist td.opt{display:flex;justify-content:space-between;align-items:baseline;gap:14px;border:0;padding:4px 0;text-align:right}
+  .hist td:before{content:attr(data-l);color:var(--cinza);font-size:13.2px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-align:left;flex:none;font-family:Archivo,system-ui,sans-serif}
+}
 </style>
 </head>
 <body>
@@ -275,8 +321,8 @@ function render(d){
     $('secHist').style.display='';
     $('hist').innerHTML = '<tr><th>Concursos</th><th>Ganhador</th><th>Prêmio</th><th>Azarão</th><th class="opt">Total</th></tr>' +
       d.historico.map(function(x){
-        return '<tr><td class="mono">' + x.inicio + '–' + x.fim + '</td><td><b>' + esc(x.ganhadores) + '</b></td><td>' + brl(x.valorGanhador) +
-          '</td><td>' + esc(x.azaroes) + ' <small>(' + x.pontosAzarao + ' pts · ' + brl(x.valorAzarao) + ')</small></td><td class="opt">' + brl(x.premio) + '</td></tr>';
+        return '<tr><td class="mono" data-l="Concursos">' + x.inicio + '–' + x.fim + '</td><td data-l="Ganhador"><b>' + esc(x.ganhadores) + '</b></td><td data-l="Prêmio">' + brl(x.valorGanhador) +
+          '</td><td data-l="Azarão"><span>' + esc(x.azaroes) + ' <small>(' + x.pontosAzarao + ' pts · ' + brl(x.valorAzarao) + ')</small></span></td><td class="opt" data-l="Total">' + brl(x.premio) + '</td></tr>';
       }).join('');
   } else { $('secHist').style.display='none'; }
 
@@ -308,11 +354,16 @@ function renderRanking(){
 }
 
 function ajustarOrg(){
+  document.querySelectorAll('.card .v').forEach(function(v){
+    v.style.fontSize = ''; v.style.whiteSpace = 'nowrap';
+    var s = parseFloat(getComputedStyle(v).fontSize);
+    while (v.scrollWidth > v.clientWidth + 1 && s > 12) { s -= 1; v.style.fontSize = s + 'px'; }
+  });
   var t = $('titulo'), o = $('org');
   if (!o || !o.textContent) return;
   o.style.fontSize = '20px';
   var wt = t.getBoundingClientRect().width, wo = o.getBoundingClientRect().width;
-  if (wt && wo) o.style.fontSize = Math.max(12, Math.min(20 * wt / wo, 30)).toFixed(1) + 'px';
+  if (wt && wo) o.style.fontSize = Math.max(12, Math.min(20 * wt / wo, 36)).toFixed(1) + 'px';
 }
 
 $('busca').addEventListener('input', renderRanking);
