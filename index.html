@@ -94,7 +94,12 @@ h2:after{content:"";flex:1;height:1px;background:var(--linha)}
 .nums{display:flex;gap:4px;flex-wrap:wrap}
 .nums span{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12px;border:1px solid var(--linha);color:#9aa7a0;background:#fff}
 .nums span.h{background:var(--verde2);border-color:var(--verde2);color:#fff}
-.linha.top{background:linear-gradient(90deg,#fff7d6,transparent)}
+.linha.top{background:#fff4cc;border:2px solid var(--ouro);border-radius:14px;margin:6px 0;padding:12px 10px}
+.linha.top .nm{font-weight:900}
+.trofeu{font-size:1.35em;margin-right:6px;vertical-align:-2px}
+body.fim #secResultado{margin-top:-56px;position:relative;z-index:2}
+body.fim #secResultado h2{display:none}
+body.fim .cards{margin-top:14px}
 .barra{display:flex;align-items:center;gap:8px}
 .trilho{flex:1;height:10px;background:#eef2ef;border-radius:99px;overflow:hidden}
 .trilho i{display:block;height:100%;background:var(--ouro);border-radius:99px}
@@ -191,6 +196,7 @@ footer b{color:var(--tinta)}
 </header>
 
 <div class="wrap">
+  <section id="secResultado" style="display:none"><h2>Resultado da rodada</h2><div id="resultado"></div></section>
   <div class="cards">
     <div class="card premio"><div class="k">Prêmio acumulado</div><div class="v" id="cPremio">—</div><div class="premio-split" id="cPremioD"></div></div>
     <div class="card"><div class="k">Concursos</div><div class="v mono" id="cConc">—</div><div class="d" id="cConcD"></div></div>
@@ -198,7 +204,6 @@ footer b{color:var(--tinta)}
     <div class="card"><div class="k">Cada um paga</div><div class="v" id="cPaga">—</div><div class="d" id="cPagaD"></div></div>
   </div>
 
-  <section id="secResultado" style="display:none"><h2>Resultado da rodada</h2><div id="resultado"></div></section>
 
   <section id="secDest">
     <h2>Destaques</h2>
@@ -278,6 +283,7 @@ function render(d){
   $('cPagaD').textContent = brl(d.valor) + ' × ' + d.concursos + ' concurso' + (d.concursos===1?'':'s');
 
   // Resultado
+  document.body.classList.toggle('fim', !!res);
   if (res){
     $('secResultado').style.display='';
     $('secDest').style.display='none';
@@ -355,7 +361,7 @@ function renderRanking(){
   $('ranking').innerHTML = lista.length ? lista.map(function(r){
     var hit = {}; r.acertos.forEach(function(n){hit[n]=1});
     var cls = r.pontos>=7 ? 'p'+r.pontos : (r.pontos===d.minimo && d.ultimo ? 'min' : '');
-    return '<div class="linha' + (r.pontos===10?' top':'') + '"><div class="pos">' + r.pos + 'º</div><div class="nm">' + esc(r.nome) + '</div>' +
+    return '<div class="linha' + (r.pontos===10?' top':'') + '"><div class="pos">' + r.pos + 'º</div><div class="nm">' + (r.pontos===10 ? '<span class="trofeu">🏆</span>' : '') + esc(r.nome) + '</div>' +
       '<div class="barra ' + cls + '"><div class="trilho"><i style="width:' + (r.pontos * 10) + '%"></i></div><b>' + r.pontos + ' de 10</b></div><div class="nums">' +
       r.numeros.map(function(n){return '<span class="' + (hit[n]?'h':'') + '">' + dd(n) + '</span>'}).join('') + '</div></div>';
   }).join('') : '<div class="vazio">Nenhum nome encontrado.</div>';
