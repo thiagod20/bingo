@@ -81,7 +81,7 @@ h2:after{content:"";flex:1;height:1px;background:var(--linha)}
 
 /* Ranking */
 .busca{width:100%;padding:12px 14px;border:1px solid var(--linha);border-radius:12px;font:inherit;font-size:15px;margin-bottom:12px;background:#fbfdfb}
-.linha{display:grid;grid-template-columns:42px minmax(150px,1.1fr) 64px 2.4fr;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid var(--linha)}
+.linha{display:grid;grid-template-columns:42px minmax(150px,1.1fr) 140px 2.4fr;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid var(--linha)}
 .linha:last-child{border-bottom:0}
 .linha .pos{font-family:'JetBrains Mono',monospace;color:var(--cinza);font-weight:800}
 .linha .nm{font-weight:700;font-size:14px}
@@ -95,6 +95,11 @@ h2:after{content:"";flex:1;height:1px;background:var(--linha)}
 .nums span{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12px;border:1px solid var(--linha);color:#9aa7a0;background:#fff}
 .nums span.h{background:var(--verde2);border-color:var(--verde2);color:#fff}
 .linha.top{background:linear-gradient(90deg,#fff7d6,transparent)}
+.barra{display:flex;align-items:center;gap:8px}
+.trilho{flex:1;height:10px;background:#eef2ef;border-radius:99px;overflow:hidden}
+.trilho i{display:block;height:100%;background:var(--ouro);border-radius:99px}
+.barra b{font-size:14px;white-space:nowrap}
+.barra.min .trilho i{background:var(--laranja)}
 
 .hist{width:100%;border-collapse:collapse;font-size:14px}
 .hist th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);padding:8px 6px;border-bottom:1px solid var(--linha)}
@@ -163,7 +168,10 @@ footer b{color:var(--tinta)}
   .linha .nums span{width:auto;height:32px;font-size:14px;border-radius:7px}
   .mini span{width:34px;height:34px}
   .sorteio .num{min-width:86px}
-  .linha{grid-template-columns:42px 1fr 48px}
+  .linha{grid-template-columns:42px 1fr}
+  .linha .barra{grid-column:1/-1}
+  .barra b{font-size:16.8px}
+  .trilho{height:12px}
   .hist tr:first-child{display:none}
   .hist tr{display:block;padding:8px 0;border-bottom:1px solid var(--linha)}
   .hist tr:last-child{border-bottom:0}
@@ -348,7 +356,7 @@ function renderRanking(){
     var hit = {}; r.acertos.forEach(function(n){hit[n]=1});
     var cls = r.pontos>=7 ? 'p'+r.pontos : (r.pontos===d.minimo && d.ultimo ? 'min' : '');
     return '<div class="linha' + (r.pontos===10?' top':'') + '"><div class="pos">' + r.pos + 'º</div><div class="nm">' + esc(r.nome) + '</div>' +
-      '<div class="pts ' + cls + '">' + r.pontos + '</div><div class="nums">' +
+      '<div class="barra ' + cls + '"><div class="trilho"><i style="width:' + (r.pontos * 10) + '%"></i></div><b>' + r.pontos + ' de 10</b></div><div class="nums">' +
       r.numeros.map(function(n){return '<span class="' + (hit[n]?'h':'') + '">' + dd(n) + '</span>'}).join('') + '</div></div>';
   }).join('') : '<div class="vazio">Nenhum nome encontrado.</div>';
 }
